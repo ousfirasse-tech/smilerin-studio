@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smilerin App</title>
+<style>
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#fff8d9;
+  color:#493b16;
+}
+header {
+  background:#ffd43b;
+  padding:25px;
+  text-align:center;
+  border-radius:0 0 25px 25px;
+}
+h1 {margin:0;font-size:30px}
+main {padding:20px;max-width:600px;margin:auto}
+.card {
+  background:white;
+  padding:18px;
+  margin:15px 0;
+  border-radius:18px;
+  box-shadow:0 3px 10px #0001;
+}
+input,textarea {
+  width:95%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  margin:7px 0;
+  font-size:16px;
+}
+button {
+  background:#ffc928;
+  border:0;
+  padding:12px 18px;
+  border-radius:10px;
+  font-weight:bold;
+}
+li {padding:9px}
+footer {text-align:center;padding:20px;color:#88763b}
+</style>
+</head>
+<body>
+<header>
+<h1>⭐ Smilerin App</h1>
+<p>My personal workspace</p>
+</header>
+<main>
+<div class="card">
+<h2>📚 My tasks</h2>
+<input id="task" placeholder="Add a new task...">
+<button onclick="addTask()">Add task +</button>
+<ul id="tasks"></ul>
+</div>
+
+<div class="card">
+<h2>📝 My notes</h2>
+<textarea id="notes" rows="6" placeholder="Write your ideas here..."></textarea>
+<p>Notes are saved automatically.</p>
+</div>
+
+<div class="card">
+<h2>💡 My ideas</h2>
+<p>Organize your projects, schoolwork and creativity!</p>
+</div>
+</main>
+<footer>Made with ⭐ by Smilerin</footer>
+
+<script>
+let tasks=JSON.parse(localStorage.getItem("tasks")||"[]");
+const notes=document.getElementById("notes");
+notes.value=localStorage.getItem("notes")||"";
+
+function save(){
+localStorage.setItem("tasks",JSON.stringify(tasks));
+}
+
+function show(){
+document.getElementById("tasks").innerHTML="";
+tasks.forEach((t,i)=>{
+let li=document.createElement("li");
+li.textContent=t+" ";
+let b=document.createElement("button");
+b.textContent="❌";
+b.onclick=()=>{
+tasks.splice(i,1);
+save();
+show();
+};
+li.appendChild(b);
+document.getElementById("tasks").appendChild(li);
+});
+}
+
+function addTask(){
+let input=document.getElementById("task");
+if(input.value.trim()){
+tasks.push(input.value.trim());
+input.value="";
+save();
+show();
+}
+}
+
+notes.addEventListener("input",()=>{
+localStorage.setItem("notes",notes.value);
+});
+
+show();
+</script>
+</body>
+</html>
